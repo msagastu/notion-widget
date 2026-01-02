@@ -1,122 +1,92 @@
-<!-- original : https://codepen.io/SeanNorton/pen/LWBXQL -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Bebas+Neue" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>greeting2</title>
+    <title>Greetings</title>
     <style>
-        /*CSS RESETS*/
-body{
-    background-color: transparent;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-    height: 100vh;
-    overflow: hidden;
-}
-h1 {
-    margin-top: 0;
-}
-/*CSS START*/
-.full-table {
-    display: table;
-    height: 100%;
-    width: 100%;
-}
-.table-cell {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-}
-.card {
-    padding: 1.5vh 3vw;
-    border-radius: 10px;
-    background: #748b75;
-    width: 100%;
-    height: 100%;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    box-shadow: none;
-    border: none;
-    box-sizing: border-box;
-}
-.emoji-display {
-    display: inline;
-    font-size: 6vh;
-    animation: rotate 3s ease-in-out infinite;
-    margin-left: 2vw;
-}
-@keyframes rotate {
-    0%, 100% { transform: rotate(0deg); }
-    50% { transform: rotate(15deg); }
-}
-.date {
-    display: inline;
-    font-size: 6.5vh;
-    padding-right: 2vw;
-    white-space: nowrap;
-}
-.greet{
-    display: inline;
-    font-size: 6.5vh;
-    padding-right: 2vw;
-    white-space: nowrap;
-}
+        body{
+            font-variant-caps: all-petite-caps;
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        .widget {
+            padding: 5px 5px;
+            color: #748b75;
+            display: flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction: column;
+            max-width: 95%;
+            margin: auto;
+            border: 3px solid #748b75;
+            border-radius: 5px;
+            box-shadow: 2px 2px 1px 0px #748b75;
+        }
+           
+        .greet{
+            font-size: 2.5em;
+        }
+        .date {
+            font-size: 1.8em;
+        }
+        .emoji {
+            display: inline;
+            font-size: 1em;
+        }
     </style>
 </head>
 <body>
-<div class="full-table">
-  <div class="table-cell">
-    
-    <div class="card">
+<div class="container">
+    <div class="widget">
         <div class="greet" id="greet"></div>
-      <div class="date" id="date"></div>
-      <div class="emoji-display" id="emoji">✧˖°</div>
+        <div class="date" id="date"></div>
     </div>
-    
-  </div>
 </div>
+        
 <script>
     const emojis = ['𓇢𓆸', '𖧧', '⸙', '⸙𖡼.𖤣𖥧𖡼.𖤣𖥧', '.☘︎ ݁˖', '· · ─ ·𖥸· ─ · ·', '๑ï', '↟𖠰˚☀︎ᨒ↟𖠰', '🀢🀣🀦🀤', '❦', '𓂃 ࣪˖ ִֶָ𐀔', '-ˋˏ ༻❁༺ ˎˊ-'];
     let emojiIndex = 0;
 
-    function date() {
-        var today = new Date();
-        document.getElementById('date').innerHTML = today.toDateString();
+    function displayGreetings(today){
+        hrs = today.getHours();
+        let greet;
+        const currentEmoji = emojis[emojiIndex];
+        
+        if (hrs < 12)
+            greet = currentEmoji + ' Good Morning ' + currentEmoji;
+        else if (hrs >= 12 && hrs <= 17)
+            greet = currentEmoji + ' Good Afternoon ' + currentEmoji;
+        else if (hrs >= 17 && hrs <= 24)
+            greet = currentEmoji + ' Good Evening ' + currentEmoji;
+        document.getElementById('greet').innerHTML = greet;
     }
     
-    function updateGreeting() {
-        var today = new Date();
-        hrs = today.getHours();
-        if (hrs < 12)
-            greet = 'Good Morning  ';
-        else if (hrs >= 12 && hrs <= 17)
-            greet = 'Good Afternoon ';
-        else if (hrs >= 17 && hrs <= 24)
-            greet = 'Good Evening  ';
-        document.getElementById('greet').innerHTML = greet;
+    function displayDate(today) {  
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+        var dayName = days[today.getDay()];
+        var monthName = monthNames[today.getMonth()];
+        var date = today.getDate();
+        var year = today.getFullYear();
+        document.getElementById('date').innerHTML = dayName + ", " + monthName + " " + date + " " + year;
     }
     
     function rotateEmoji() {
         emojiIndex = (emojiIndex + 1) % emojis.length;
-        document.getElementById('emoji').innerHTML = emojis[emojiIndex];
+        displayGreetings(new Date());
     }
     
-    function dateTime() {
-        date();
-        updateGreeting();
-        setTimeout(dateTime, 60000);
+    function displayWidget() {
+        var today = new Date();
+        displayGreetings(today);
+        displayDate(today);
+        setTimeout(displayWidget, 60000);
     }
     
-    dateTime();
+    displayWidget();
     
-    // Rotate emoji every 3 minute
+    // Rotate emoji every 3 minutes
     setInterval(rotateEmoji, 180000);
 </script>
 </body>
