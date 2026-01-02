@@ -1,70 +1,118 @@
+<!-- original : https://codepen.io/SeanNorton/pen/LWBXQL -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Bebas+Neue" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notion Widget</title>
+    <title>greeting2</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-            background: transparent;
-        }
-        
-        .widget {
-            background: transparent;
-            padding: 15px 25px;
-            border-radius: 10px;
-            border: 2px solid #748b75;
-            text-align: center;
-            margin: 10px;
-            box-sizing: border-box;
-        }
-        
-        .greet {
-            font-size: 1.5em;
-            font-weight: 600;
-            color: #748b75;
-            margin-bottom: 8px;
-        }
-        
-        .date {
-            font-size: 1em;
-            color: #748b75;
-            font-weight: 400;
-        }
+        /*CSS RESETS*/
+body{
+    background-color: transparent;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+}
+h1 {
+    margin-top: 0;
+}
+/*CSS START*/
+.full-table {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+.table-cell {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+.card {
+    padding: 10px 25px 10px 25px;
+    border-radius: 10px;
+    background: #748b75;
+    width: 85vw;
+    color: #ffffff;
+    display: inline-block;
+    box-shadow: none;
+    border: none;
+}
+.card:hover {
+    margin-top: 0px;
+    box-shadow: none;
+}
+.emoji-display {
+    display: inline;
+    font-size: 2em;
+    animation: rotate 3s ease-in-out infinite;
+}
+@keyframes rotate {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(15deg); }
+}
+.date {
+    display: inline;
+    min-width: 162px;
+    font-size: 2em;
+    padding-right: 30px;
+}
+.greet{
+    display:inline;
+    font-size: 2rem;
+    padding-right: 30px;
+}
     </style>
 </head>
 <body>
-    <div class="widget">
+<div class="full-table">
+  <div class="table-cell">
+    
+    <div class="card">
         <div class="greet" id="greet"></div>
-        <div class="date" id="date"></div>
+      <div class="date" id="date"></div>
+      <div class="emoji-display" id="emoji">✨</div>
     </div>
-        
-    <script>
-        function displayGreetings(today) {
-            const hrs = today.getHours();
-            let greet;
-            
-            if (hrs < 12)
-                greet = 'Good Morning';
-            else if (hrs >= 12 && hrs < 17)
-                greet = 'Good Afternoon';
-            else
-                greet = 'Good Evening';
-                
-            document.getElementById('greet').innerHTML = greet;
-        }
-        
-        function displayDate(today) {
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const monthNames = ["January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"];
-            
-            const dayName = days[today.getDay()];
-            const monthName = monthNames[today.getMonth()];
-            const date = today.getDate();
-            const year = today.getFullYear();
-            
-            document.getElementById('date')
+    
+  </div>
+</div>
+<script>
+    const emojis = ['𓇢𓆸', '𖧧', '⸙', '⸙𖡼.𖤣𖥧𖡼.𖤣𖥧', '.☘︎ ݁˖', '· · ─ ·𖥸· ─ · ·', '๑ï', '↟𖠰˚☀︎ᨒ↟𖠰', '🀢🀣🀦🀤', '❦', '𓂃 ࣪˖ ִֶָ𐀔', '-ˋˏ ༻❁༺ ˎˊ-'];
+    let emojiIndex = 0;
+
+    function date() {
+        var today = new Date();
+        document.getElementById('date').innerHTML = today.toDateString();
+    }
+    
+    function updateGreeting() {
+        var today = new Date();
+        hrs = today.getHours();
+        if (hrs < 12)
+            greet = 'Good Morning  ';
+        else if (hrs >= 12 && hrs <= 17)
+            greet = 'Good Afternoon ';
+        else if (hrs >= 17 && hrs <= 24)
+            greet = 'Good Evening  ';
+        document.getElementById('greet').innerHTML = greet;
+    }
+    
+    function rotateEmoji() {
+        emojiIndex = (emojiIndex + 1) % emojis.length;
+        document.getElementById('emoji').innerHTML = emojis[emojiIndex];
+    }
+    
+    function dateTime() {
+        date();
+        updateGreeting();
+        setTimeout(dateTime, 60000);
+    }
+    
+    dateTime();
+    
+    // Rotate emoji every 2 seconds
+    setInterval(rotateEmoji, 2000);
+</script>
+</body>
+</html>
