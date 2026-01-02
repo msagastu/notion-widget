@@ -24,14 +24,18 @@
         }
            
         .greet{
-            font-size: 2.5em;
+            font-size: 2.2em;
         }
         .date {
-            font-size: 1.8em;
+            font-size: 1.5em;
         }
         .emoji {
-            display: inline;
-            font-size: 1em;
+            display: inline-block;
+            animation: rotate 3s ease-in-out infinite;
+        }
+        @keyframes rotate {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
         }
     </style>
 </head>
@@ -50,7 +54,7 @@
     function displayGreetings(today){
         hrs = today.getHours();
         let greet;
-        const currentEmoji = emojis[emojiIndex];
+        const currentEmoji = '<span class="emoji">' + emojis[emojiIndex] + '</span>';
         
         if (hrs < 12)
             greet = currentEmoji + ' Good Morning ' + currentEmoji;
